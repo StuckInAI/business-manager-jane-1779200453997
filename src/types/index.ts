@@ -1,5 +1,3 @@
-export type UserRole = 'customer' | 'staff';
-
 export type LoanStatus =
   | 'draft'
   | 'submitted'
@@ -11,22 +9,27 @@ export type LoanStatus =
   | 'disbursed'
   | 'rejected';
 
-export type LoanType =
-  | 'personal'
-  | 'business'
-  | 'mortgage'
-  | 'auto'
-  | 'student';
+export type LoanType = 'personal' | 'business' | 'mortgage' | 'auto' | 'student';
 
-export interface Document {
+export type User = {
+  id: string;
+  email: string;
+  password: string;
+  role: 'customer' | 'staff';
+  firstName: string;
+  lastName: string;
+  createdAt: string;
+};
+
+export type Document = {
   id: string;
   name: string;
   type: 'id' | 'payslip' | 'bank_statement' | 'other';
   status: 'pending' | 'approved' | 'rejected';
   uploadedAt: string;
-}
+};
 
-export interface LoanOffer {
+export type LoanOffer = {
   id: string;
   applicationId: string;
   amount: number;
@@ -38,18 +41,18 @@ export interface LoanOffer {
   expiresAt: string;
   customizedByStaff: boolean;
   status: 'pending' | 'accepted' | 'declined';
-}
+};
 
-export interface TimelineStep {
+export type TimelineStep = {
   id: string;
-  stage: LoanStatus;
+  stage: string;
   label: string;
   description: string;
+  status: 'pending' | 'active' | 'completed';
   completedAt: string | null;
-  status: 'completed' | 'active' | 'pending';
-}
+};
 
-export interface LoanApplication {
+export type LoanApplication = {
   id: string;
   userId: string;
   type: LoanType;
@@ -58,36 +61,25 @@ export interface LoanApplication {
   status: LoanStatus;
   createdAt: string;
   updatedAt: string;
-  documents: Document[];
-  offer: LoanOffer | null;
-  timeline: TimelineStep[];
-  // Personal info
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
   dateOfBirth: string;
   address: string;
-  // Financial info
-  employmentStatus: string;
+  employmentStatus: 'full_time' | 'part_time' | 'self_employed' | 'unemployed' | 'retired';
   annualIncome: number;
   monthlyExpenses: number;
   creditScore: number;
   existingDebts: number;
-}
+  documents: Document[];
+  offer: LoanOffer | null;
+  timeline: TimelineStep[];
+  _monthlyEstimate?: number;
+};
 
-export interface User {
-  id: string;
-  email: string;
-  password: string;
-  role: UserRole;
-  firstName: string;
-  lastName: string;
-  createdAt: string;
-}
-
-export interface AppState {
+export type AppState = {
   currentUser: User | null;
   users: User[];
   applications: LoanApplication[];
-}
+};
